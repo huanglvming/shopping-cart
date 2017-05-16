@@ -158,25 +158,27 @@ export default{
 	在这里需要介绍一个知识点，即 **ref**, 通过 **ref** 方法可以让父组件读取到子组件的数据，因此可以获取到商品的数量。
 	
 	代码如下：
+  
 	
 	```
-checkedAll(){
-		this.checked = !this.checked;
-		if(this.checked){
-			for(let i=0,len=this.$store.state.list.length; i<len; i++){
-				this.$set(this.$store.state.list[i],'checked',true);
-				//计算购物车商品总额
-				this.$store.state.amount += this.$refs.goods[i].num * this.$store.state.list[i].price;
-			}
-			this.$store.state.checkAll = true;
-			this.$store.state.checkNumber = this.$store.state.list.length;
-		}else{
-			for(let i=0,len=this.$store.state.list.length; i<len; i++){
-				this.$set(this.$store.state.list[i],'checked',false);
-			}
-			this.$store.state.checkAll = false;
-			this.$store.state.checkNumber = 0;
-			this.$store.state.amount = 0;
-		}
-}
+    checkedAll(){
+        this.checked = !this.checked;
+        if(this.checked){
+          for(let i=0,len=this.$store.state.list.length; i<len; i++){
+            this.$set(this.$store.state.list[i],'checked',true);
+            //计算购物车商品总额
+            this.$store.state.amount += this.$refs.goods[i].num * this.$store.state.list[i].price;
+          }
+          this.$store.state.checkAll = true;
+          this.$store.state.checkNumber = this.$store.state.list.length;
+        }else{
+          for(let i=0,len=this.$store.state.list.length; i<len; i++){
+            this.$set(this.$store.state.list[i],'checked',false);
+          }
+          this.$store.state.checkAll = false;
+          this.$store.state.checkNumber = 0;
+          this.$store.state.amount = 0;
+        }
+    }
+    
 	```

@@ -1,0 +1,22 @@
+{
+  "goods": {
+    "code": 1000,
+    "list": [
+      {
+        "name": "iphone",
+        "price": 10,
+        "pic": "https://img12.360buyimg.com/n7/jfs/t3034/299/2060854617/119711/577e85cb/57d11b6cN1fd1194d.jpg"
+      },
+      {
+        "name": "ipad",
+        "price": 20,
+        "pic": "https://img11.360buyimg.com/n7/jfs/t4063/252/2569617591/621169/2a1735b5/58d20d5eN4de2034c.jpg"
+      },
+      {
+        "name": "iMac",
+        "price": 30,
+        "pic": "https://img13.360buyimg.com/n7/jfs/t1945/232/861949353/127581/cdf8c9e0/5631d324Nfbcf8ea5.jpg"
+      }
+    ]
+  }
+}

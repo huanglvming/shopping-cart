@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>购物车</title>
+    <link rel="stylesheet" href="static/css/reset.css">
+    <script>
+    	(function(){
+    		function setFontSize(){
+    			var w = (window.screen.availWidth>414)?414:(window.screen.availWidth<320?320:window.screen.availWidth);
+	    		var fz = (w / 375) * 20 + 'px';
+	    		document.querySelector('html').style.fontSize = fz;
+    		}
+    		setFontSize();
+    		window.onresize = function(){
+    			setFontSize();
+    		}
+    	})()
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

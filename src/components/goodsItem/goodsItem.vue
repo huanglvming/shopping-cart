@@ -8,7 +8,7 @@
 				<img class="goods-pic">
 				<div class="item-container">
 					<div class="goods-name">{{item.name}}</div>
-					<div class="goods-price">{{item.price}}</div>
+					<div class="goods-price">{{item.price | price}}</div>
 				</div>
 			</div>
 		</div>
@@ -58,6 +58,11 @@
 				this.$store.state.amount += item.price;
 			}
 		},
+		filters:{
+	  	  	price(val){
+	  		 return '¥' + val.toFixed(2);
+	  	  	}
+	    },
 	}
 </script>
 

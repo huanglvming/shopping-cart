@@ -12,7 +12,7 @@
 			</div>
 			<div class="bills-container">
 				<div class="amount">
-					<span>合计: {{amount}}</span>
+					合计：<span>{{amount | price}}</span>
 				</div>
 				<div class="check-out">
 					<div class="btn-pay">结算({{checkedNum}})</div>
@@ -63,17 +63,23 @@
 				_this.$store.state.amount = 0;
 				if(this.$store.state.allChecked){
 					this.$refs.goods.forEach( function(el, index) {
-						console.log(el);
 						el.checked = true;
-						_this.$store.state.amount += el.item.price * el.quantity
+						_this.$store.state.amount += el.item.price * el.quantity;
 					});
+					this.$store.state.checkedNum = this.$refs.goods.length;
 				}else{
 					this.$refs.goods.forEach( function(el, index) {
 						el.checked = false;
 					});
+					this.$store.state.checkedNum = 0;
 				}
 			}
-		}
+		},
+	    filters:{
+	  	  	price(val){
+	  		 return '¥' + val.toFixed(2);
+	  	  	}
+	    },
 	}
 </script>
 
@@ -105,10 +111,9 @@
 		.amount{
 			margin-right: 10px;
 			line-height: 30px;
-			color: lightcoral;
 			span{
 				font-weight: bolder;
-				color: #333;
+				color: lightcoral;
 			}
 		}
 	}

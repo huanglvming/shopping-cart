@@ -1,6 +1,6 @@
 export default{
-	list: [],
+	list:[],
+	checkedNum:0,
 	amount: 0,
-	checkAll: false,
-	checkNumber: 0,
+	allChecked: false,
 }

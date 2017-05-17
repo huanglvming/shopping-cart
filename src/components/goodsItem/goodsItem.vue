@@ -2,19 +2,19 @@
 	<div class="goods-item">
 		<div class="goods-info-container">
 			<div class="goods-check">
-				<input type="checkbox" :value="index" :checked="item.checked" @click="singelCheck(item,$event)">
+				<input type="checkbox" @click="singleCheck(item,$event)" :checked="checked">
 			</div>
 			<div class="goods-info">
-				<img :src="item.pic" class="goods-pic">
+				<img class="goods-pic">
 				<div class="item-container">
 					<div class="goods-name">{{item.name}}</div>
-					<div class="goods-price">{{item.price | price}}</div>
+					<div class="goods-price">{{item.price}}</div>
 				</div>
 			</div>
 		</div>
 		<div class="goods-operate">
-			<span class="operate sub" :price="item.price" @click="sub(item)">-</span>
-			<span class="goods-quantity">{{num}}</span>
+			<span class="operate sub" @click="sub(item)">-</span>
+			<span class="goods-quantity">{{quantity}}</span>
 			<span class="operate add" @click="add(item)">+</span>
 		</div>
 	</div>
@@ -24,67 +24,38 @@
 	import Vue from "vue"
 	export default{
 		name: 'goodsItem',
-		props:['item','index'],
+		props:['item'],
 		data(){
 			return{
-				num: 1,
-				isChecked: false,
-			}
-		},
-		computed:{
-			quantity(){
-				return this.num;
+				checked: false,
+				quantity: 1,
 			}
 		},
 		methods:{
-			sub(item){
-				if(this.num>1){
-					this.num --;
-					if(item.checked){
-						this.$store.state.amount -= item.price;
+			singleCheck(item,event){
+				this.checked = event.currentTarget.checked;
+				if(this.checked){
+					this.$store.state.amount += this.quantity * item.price;
+					this.$store.state.checkedNum ++;
+					if(this.$store.state.checkedNum == this.$store.state.list.length){
+						this.$store.state.allChecked = true;
 					}
+				}else{
+					this.$store.state.amount -= this.quantity * item.price;
+					this.$store.state.checkedNum --;
+					this.$store.state.allChecked = false;
+				}
+				console.log("allChecked:"+this.$store.state.allChecked);
+			},
+			sub(item){
+				if(this.quantity>1){
+					this.quantity --;
+					this.$store.state.amount -= item.price;
 				}
 			},
 			add(item){
-				this.num ++;
-				if(item.checked){
-					this.$store.state.amount += item.price;
-				}
-			},
-			singelCheck(item,event){
-				if(typeof item.checked === 'undefined'){
-					this.$set(item,'checked',true);
-				}
-				this.$set(item,'checked',event.currentTarget.checked);
-				this.isChecked = event.currentTarget.checked;
-				// 判断是否激活全选按钮
-				// if(this.checkAll()){
-				// 	this.$store.state.checkAll = true;
-				// }else{
-				// 	this.$store.state.checkAll = false;
-				// }
-				this.$store.state.checkAll = this.checkAll();
-				// 更新购物车合计金额
-				if(item.checked){
-					this.$store.state.amount += item.price * this.quantity;
-				}else{
-					this.$store.state.amount -= item.price * this.quantity;
-				}
-
-			},
-			checkAll(){
-				let flag = true;
-				this.$store.state.list.forEach(function(item,index){
-					if(!item.checked){
-						flag = false;
-					}
-				})
-				return flag;
-			}
-		},
-		filters:{
-			price(value){
-				return '¥' + value.toFixed(2);
+				this.quantity ++;
+				this.$store.state.amount += item.price;
 			}
 		},
 	}

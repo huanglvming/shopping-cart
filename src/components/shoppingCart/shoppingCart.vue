@@ -1,21 +1,21 @@
 <template>
 	<div class="list-wrapper">
 		<div class="list-content">
-			<goods-item v-for="(item,index) in list" :item="item" :index="index" :key="index" ref="goods"></goods-item>
+			<goods-item v-for="(item,index) in list" :key="index" :item="item" ref="goods"></goods-item>
 		</div>
 		<div class="list-bottom">
 			<div class="check-all">
 				<label for="checkAll">
-					<input type="checkbox" @click="checkedAll" :checked="checkAll">
+					<input type="checkbox" :checked="allChecked" @click="checkAll($event)">
 					全选
 				</label>
 			</div>
 			<div class="bills-container">
 				<div class="amount">
-					<span>合计: </span>{{amount | price}}
+					<span>合计: {{amount}}</span>
 				</div>
 				<div class="check-out">
-					<div class="btn-pay">结算({{checkNumber}})</div>
+					<div class="btn-pay">结算({{checkedNum}})</div>
 				</div>
 			</div>
 		</div>
@@ -29,11 +29,15 @@
 		name: 'shoppingCart',
 		data(){
 			return{
-				checked: false,
+				
 			}
 		},
-		components:{
-			goodsItem
+		created(){
+			this.$axios.get('api/goods').then(resp => {
+				let obj = resp.data;
+				console.log(obj);
+				this.$store.state.list = obj.data.list;
+			})
 		},
 		computed:{
 			list(){
@@ -42,45 +46,31 @@
 			amount(){
 				return this.$store.state.amount;
 			},
-			checkNumber(){
-				return this.$store.state.checkNumber;
+			allChecked(){
+				return this.$store.state.allChecked;
 			},
-			checkAll(){
-				return this.$store.state.checkAll;
+			checkedNum(){
+				return this.$store.state.checkedNum;
 			}
 		},
-		created(){
-			this.$axios.get('api/goods').then(res => {
-				console.log(res);
-				this.$store.state.list = res.data.data.list;
-				console.log(this.$store.state.list);
-			}).catch(err => {
-				console.log(err);
-			})
-		},
-		filters:{
-			price(value){
-				return '¥ ' + value.toFixed(2);
-			}
+		components:{
+			goodsItem
 		},
 		methods:{
-			checkedAll(){
-				this.checked = !this.checked;
-				if(this.checked){
-					for(let i=0,len=this.$store.state.list.length; i<len; i++){
-						this.$set(this.$store.state.list[i],'checked',true);
-						//计算购物车商品总额
-						this.$store.state.amount += this.$refs.goods[i].num * this.$store.state.list[i].price;
-					}
-					this.$store.state.checkAll = true;
-					this.$store.state.checkNumber = this.$store.state.list.length;
+			checkAll(event){
+				var _this = this;
+				this.$store.state.allChecked = event.currentTarget.checked;
+				_this.$store.state.amount = 0;
+				if(this.$store.state.allChecked){
+					this.$refs.goods.forEach( function(el, index) {
+						console.log(el);
+						el.checked = true;
+						_this.$store.state.amount += el.item.price * el.quantity
+					});
 				}else{
-					for(let i=0,len=this.$store.state.list.length; i<len; i++){
-						this.$set(this.$store.state.list[i],'checked',false);
-					}
-					this.$store.state.checkAll = false;
-					this.$store.state.checkNumber = 0;
-					this.$store.state.amount = 0;
+					this.$refs.goods.forEach( function(el, index) {
+						el.checked = false;
+					});
 				}
 			}
 		}

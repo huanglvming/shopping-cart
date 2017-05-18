@@ -5,7 +5,7 @@
 				<input type="checkbox" @click="singleCheck(item,$event)" :checked="checked">
 			</div>
 			<div class="goods-info">
-				<img class="goods-pic">
+				<img class="goods-pic" :src="item.pic">
 				<div class="item-container">
 					<div class="goods-name">{{item.name}}</div>
 					<div class="goods-price">{{item.price | price}}</div>
